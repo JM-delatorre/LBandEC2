@@ -4,6 +4,10 @@ Build using terraform v1.7.5
 
 by: Juan Manuel De La Torre Sanchez
 
+GitHub: [Click here](https://github.com/JM-delatorre/LBandEC2).
+
+
+
 ## Diagram
 
 ![Architecture](./Images/arch.png)
