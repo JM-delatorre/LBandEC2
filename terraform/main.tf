@@ -30,9 +30,9 @@ resource "aws_security_group" "ec2_sg" {
   vpc_id = aws_vpc.vpc.id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
     security_groups = [aws_security_group.alb_sg.id]
   }
   egress {
@@ -57,7 +57,7 @@ data "aws_ami" "amazon-linux-2" {
 }
 
 resource "aws_network_interface" "ec2_nic1" {
-  subnet_id = aws_subnet.private_subnet1.id
+  subnet_id       = aws_subnet.private_subnet1.id
   security_groups = [aws_security_group.ec2_sg.id]
 
   tags = {
@@ -66,7 +66,7 @@ resource "aws_network_interface" "ec2_nic1" {
 }
 
 resource "aws_network_interface" "ec2_nic2" {
-  subnet_id = aws_subnet.private_subnet2.id
+  subnet_id       = aws_subnet.private_subnet2.id
   security_groups = [aws_security_group.ec2_sg.id]
 
   tags = {
@@ -76,7 +76,7 @@ resource "aws_network_interface" "ec2_nic2" {
 
 
 resource "aws_instance" "ec2" {
-  count = 2
+  count         = 2
   ami           = data.aws_ami.amazon-linux-2.id
   instance_type = "t2.micro"
   network_interface {
@@ -84,7 +84,7 @@ resource "aws_instance" "ec2" {
     device_index         = 0
   }
 
-  user_data = file("./http_install.sh")
+  user_data                   = file("./http_install.sh")
   user_data_replace_on_change = true
 
   tags = {
@@ -123,7 +123,7 @@ resource "aws_lb_listener" "alb_listener" {
 }
 
 resource "aws_lb_target_group_attachment" "alb_tg_attachment" {
-  count = 2
+  count            = 2
   target_group_arn = aws_lb_target_group.alb_tg.arn
   target_id        = aws_instance.ec2[count.index].id
   port             = 80
